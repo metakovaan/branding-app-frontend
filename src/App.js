@@ -1,24 +1,34 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useEffect, useState } from "react";
+import { BrowserRouter as Router } from "react-router-dom";
+import { Navbar } from "./components/Navbar";
+import { HeroSection } from "./components/HeroSection";
+import { Services } from "./components/Services";
+import { CaseStudies } from "./components/CaseStudies";
+import { Brands } from "./components/Brands";
+import { Footer } from "./components/Footer";
+import "tailwindcss/tailwind.css";
 
 function App() {
+  const [brands, setBrands] = useState([]);
+
+  useEffect(() => {
+    fetch("http://localhost:3000/api/brands")
+      .then((response) => response.json())
+      .then((data) => setBrands(data))
+      .catch((error) => console.error("Error fetching brands:", error));
+  }, []);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Router>
+      <div className="font-inter">
+        <Navbar />
+        <HeroSection />
+        <Services />
+        <CaseStudies />
+        <Brands brands={brands} />
+        <Footer />
+      </div>
+    </Router>
   );
 }
 
